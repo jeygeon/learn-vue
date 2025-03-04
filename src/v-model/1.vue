@@ -57,12 +57,12 @@
 
 		<h2>Radio Value</h2>
 		<label>
-			<input type="radio" name="type" value="HTML" v-model="radioValue" />
-			HTML
+			<input type="radio" name="type" value="o" v-model="radioValue" />
+			O 형
 		</label>
 		<label>
-			<input type="radio" name="type" value="CSS" v-model="radioValue" />
-			CSS
+			<input type="radio" name="type" value="a" v-model="radioValue" />
+			A 형
 		</label>
 		<div>{{ radioValue }}</div>
 
@@ -89,7 +89,7 @@ import { ref } from 'vue';
 
 const inputValue = ref('');
 const checkboxValue = ref('yes');
-const radioValue = ref('HTML');
+const radioValue = ref('o');
 const selectValue = ref('HTML');
 const checkboxValues = ref([]);
 </script>
