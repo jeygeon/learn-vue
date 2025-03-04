@@ -1,97 +1,50 @@
 <template>
 	<div>
 		<!--
-		form 에서 입력 양식을 처리할 떄 입력 요소의 상태와 자바스크립트의 상태를 동기화해야 하는 경우가 있다.
-		@input 디렉티브를 통해서 input에 입력이 있을때마다 자바스크립트의 요소 값을 동기화 할 수 있다 
-		:value="inputValue" 
-		@input="event => (inputValue = event.target.value)"
-		-->
-		<h2>Input Value</h2>
-		<!--
-		<input
-			type="text"
-			:value="inputValue"
-			@input="event => (inputValue = event.target.value)"
-		/>
-		-->
-		<input type="text" v-model="inputValue" />
-		<div>{{ inputValue }}</div>
-
-		<hr />
-
-		<!--
-		v-model은 HTML 요소가 뭐냐에 따라서 서로 다른 속성과 이벤트를 처리한다
-		
-		input type="text", input type="textarea" 는 value속성과 input 이벤트
-		input type="checkbox", input type="radio" 는 checked속성과 change 이벤트
-		input type="select"는 value속성과 change 이벤트
-		-->
-		<h2>CheckBox Value</h2>
-		<input
-			type="checkbox"
-			id="checkbox"
-			v-model="checkboxValue"
-			true-value="yes"
-			false-value="no"
-		/>
-		<label for="checkbox">{{ checkboxValue }}</label>
-
-		<hr />
-
-		<h2>CheckBox Values</h2>
-		<label>
-			<input type="checkbox" value="HTML" v-model="checkboxValues" /> HTML
-		</label>
-		<label>
-			<input type="checkbox" value="CSS" v-model="checkboxValues" /> CSS
-		</label>
-		<label>
-			<input
-				type="checkbox"
-				value="JavaScript"
-				v-model="checkboxValues"
-			/>JavaScript
-		</label>
-		<div>{{ checkboxValues }}</div>
-		<hr />
-
-		<h2>Radio Value</h2>
-		<label>
-			<input type="radio" name="type" value="HTML" v-model="radioValue" />
-			HTML
-		</label>
-		<label>
-			<input type="radio" name="type" value="CSS" v-model="radioValue" />
-			CSS
-		</label>
-		<div>{{ radioValue }}</div>
-
-		<hr />
-
-		<h2>Select Value</h2>
-		<select v-model="selectValue">
-			<option value="HTML">HTML</option>
-			<option value="CSS">CSS</option>
-			<option value="JavaScript">JavaScript</option>
-		</select>
-		<div>{{ selectValue }}</div>
-
-		<!--
-		v-model 수식어(modifiers)
-		.lazy
-		.number > 입력 값이 자동으로 number 형변환
-		.trim > 입력 값이 자동으로 앞뒤 공백 제거
+		반응형 상태가 변경되었을 때를 감지하여 다른 작업을 수행해야 하는 경우가 있다. (ex. api call 등..)
+		Composition API의 Watch 함수를 통해 해당 작업을 수행할 수 있다.
 		--></div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
-const inputValue = ref('');
-const checkboxValue = ref('yes');
-const radioValue = ref('HTML');
-const selectValue = ref('HTML');
-const checkboxValues = ref([]);
+const message1 = ref('hello');
+watch(message1, (newValue, oldValue) => {
+	console.log('newValue: ', newValue);
+	console.log('oldValue: ', oldValue);
+});
+
+// 반응형 객체를 직접 watch() 하게 되면 속성뿐만 아니라 중첩된 모든 속성도 트리거가 된다.
+const person = reactive({
+	name: 'hong',
+	age: 25,
+	language: {
+		HTML: true,
+		CSS: true,
+		JavaScript: true,
+	},
+});
+// 반응형 객체는 newValue와 oldValue가 모두 같은 대상을 바라보기 때문에 하나만 사용해도 된다.
+watch(
+	person,
+	value => {
+		console.log(value);
+	},
+	{ deep: false },
+);
+
+// immediate를 true로 세 번째 매개변수로 주었을 때 변경 감지 전 바로 함수를 실행할 수 있다.
+const message = ref('Hello');
+const immediateMessage = ref('');
+watch(
+	message,
+	value => {
+		immediateMessage.value = value + ' Vue3';
+		console.log(immediateMessage.value);
+	},
+	{ immediate: true },
+);
 </script>
 
 <style lang="scss" scoped></style>
