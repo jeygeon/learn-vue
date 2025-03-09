@@ -25,7 +25,8 @@
 
 				<hr class="my-4" />
 
-				<LabelInput v-model="username" label="이름"></LabelInput>
+				<!-- <LabelInput v-model:username="username"></LabelInput> {{ username }} -->
+				<LabelInput v-model="username"></LabelInput> {{ username }}
 			</div>
 		</main>
 	</div>
@@ -54,7 +55,7 @@ const createPost = newPost => {
 	posts.push(newPost);
 };
 
-const username = ref('');
+const username = ref('홍길동');
 </script>
 
 <style lang="scss" scoped></style>
