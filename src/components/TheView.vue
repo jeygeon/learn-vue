@@ -2,60 +2,43 @@
 	<div>
 		<main>
 			<div class="container py-4">
-				<PostCreate @create-post="createPost"></PostCreate>
+				<MyButton class="hello-btn" id="hello-btn" @click="sayHello"></MyButton>
 
-				<hr class="my-4" />
+				<hr />
 
-				<div class="row g-3">
-					<div class="col col-4">
-						<AppCard title="제목1" content="내용1"></AppCard>
-					</div>
-					<div class="col col-4">
-						<AppCard :title="post.title" :content="post.content"></AppCard>
-					</div>
-					<div class="col col-4" v-for="(post, index) in posts" :key="index">
-						<AppCard
-							:title="post.title"
-							:content="post.content"
-							:isLike="post.isLike"
-							:type="post.type"
-						></AppCard>
-					</div>
-				</div>
+				<FancyButton>Click!! <span style="color: red">@@@</span> </FancyButton>
 
-				<hr class="my-4" />
+				<hr />
 
-				<!-- <LabelInput v-model:username="username"></LabelInput> {{ username }} -->
-				<LabelInput v-model="username"></LabelInput> {{ username }}
+				<!-- slot에 전달인자를 설정하여 원하는 slot으로 컨텐츠로 내용을 전달할 수 있다. -->
+				<AppCard>
+					<template v-slot:header>제목</template>
+					<!-- slot이름은 동적으로 적용도 가능하다. -->
+					<template v-slot:[slotArgs]>내용1</template>
+					<template v-slot>내용2</template>
+					<!-- 자식 컴포넌트에서 보낸 데이터를 할당 받을 수 도 있다. -->
+					<template #content3="{ contentMessage }">
+						{{ contentMessage }}
+					</template>
+					<!-- slot의 단축표현으로 #을 사용할 수 있다. -->
+					<template #footer>시간</template>
+				</AppCard>
 			</div>
 		</main>
 	</div>
 </template>
 
 <script setup>
-import AppCard from '@/components/AppCard.vue';
-import PostCreate from '@/components/PostCreate.vue';
-import LabelInput from '@/components/LabelInput.vue';
-import { reactive, ref } from 'vue';
+import MyButton from './MyButton.vue';
+import FancyButton from './FancyButton.vue';
+import AppCard from './AppCard.vue';
+import { ref } from 'vue';
 
-const post = reactive({
-	title: '제목2',
-	content: '내용2',
-});
-
-const posts = reactive([
-	{ title: '제목3', content: '내용3', isLike: true, type: 'news' },
-	{ title: '제목4', content: '내용4', isLike: false, type: 'notice' },
-	{ title: '제목5', content: '내용5', isLike: true, type: 'notice' },
-	{ title: '제목6', content: '내용6', isLike: false, type: 'news' },
-]);
-
-const createPost = newPost => {
-	console.log(newPost);
-	posts.push(newPost);
+const sayHello = () => {
+	alert('안녕하세요');
 };
 
-const username = ref('홍길동');
+const slotArgs = ref('content1');
 </script>
 
 <style lang="scss" scoped></style>
