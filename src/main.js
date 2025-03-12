@@ -2,7 +2,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 
-createApp(App).mount('#app');
+const app = createApp(App);
+app.mount('#app');
+app.provide('app-message', 'This is App Message');
 
 // 전역적으로 컴포넌트를 등록하게 되면, 해당 컴포넌트를 사용하지 않더라도
 // 최종적으로 빌드에 해당 컴포넌트가 포함된다.
